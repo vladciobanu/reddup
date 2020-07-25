@@ -40,5 +40,6 @@ doIt :: R.Reddup ()
 doIt = do
   ask >>= (R.debug . T.pack . show)
   trackable <- Track.configToTrackables
+  R.debug $ T.pack $ show trackable
   Track.handleTrackable trackable
   R.debug "done"

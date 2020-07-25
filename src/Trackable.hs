@@ -33,18 +33,27 @@ processInboxTrackable idt@(InboxDirTrackable dir _locSpec)= do
 
 configToTrackables :: R.Reddup Trackable
 configToTrackables = do
+  liftIO $ putStrLn "1"
   reddup <- ask
+  liftIO $ putStrLn "2"
   location <- lift $ Tu.select $ C.locations $ C.rawConfig $ R.reddupConfig reddup
+  liftIO $ putStrLn "3"
   lift $ locationSpecToTrackable location
 
 locationSpecToTrackable :: C.LocationSpec -> Tu.Shell Trackable
 locationSpecToTrackable ls = do
+  liftIO $ putStrLn "4"
   let expand location =
         (Tu.fromText . Tu.lineToText) <$> (ShellUtil.expandGlob location)
+  liftIO $ putStrLn "5"
   case ls of
     C.GitLoc location -> do
+      liftIO $ putStrLn "6"
       path' <- (expand location)
+      liftIO $ putStrLn "7"
       return $ GitRepo $ GitRepoTrackable path' ls
     C.InboxLoc location _foo -> do
+      liftIO $ putStrLn "8"
       path' <- (expand location)
+      liftIO $ putStrLn "9"
       return $ InboxDir $ InboxDirTrackable path' ls
